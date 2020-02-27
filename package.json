@@ -1,0 +1,30 @@
+{
+	"name": "fastjson",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "yarn mocha test/**/*.ts",
+		"build:esm": "yarn tsc -b tsconfig.esm.json",
+		"build:cjs": "yarn tsc -b tsconfig.cjs.json",
+		"build": "yarn run build:esm && yarn run build:cjs",
+		"lint": "eslint --fix src/**/*.ts test/**/*.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/lodash": "^4.14.149",
+		"@types/mocha": "^7.0.1",
+		"@typescript-eslint/eslint-plugin": "^2.21.0",
+		"@typescript-eslint/parser": "^2.21.0",
+		"eslint": "^6.8.0",
+		"lodash": "^4.17.15",
+		"mocha": "^7.0.1",
+		"should": "^13.2.3",
+		"ts-node": "^8.6.2",
+		"tsconfig-paths": "^3.9.0",
+		"typescript": "^3.7.4"
+	},
+	"dependencies": {}
+}
