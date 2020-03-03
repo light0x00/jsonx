@@ -1,0 +1,10 @@
+{
+	/* Some comments */
+	"target": /* Some comments */ "ESNext", //Some comments
+	"lib":  /* Some comments */ [
+		/* Some comments */
+		"ESNext", //Some comments
+		null  //`null` is supported
+	],
+	/* Some comments */
+}

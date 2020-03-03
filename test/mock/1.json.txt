@@ -1,0 +1,15 @@
+{
+	"key1": 123,
+	"key2": 123.456,
+	"key3": "abc",
+	"key4": false,
+	"key5": {
+		"foo": "foooo",
+		"bar": "barrr"
+	},
+	"key6": [
+		"foo",
+		"bar"
+	],
+	"key7":null
+}

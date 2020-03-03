@@ -1,0 +1,27 @@
+============================strict json grammar============================
+#TOKEN_PROTOTYPES
+STRING,NUMBER,BOOLEAN
+
+#GRAMMAR
+S -> json;
+factor -> array | obj | STRING | NUMBER | BOOLEAN <% (e)=> new FactorNode(e) %>;
+entry -> STRING ':' factor <% (e)=>new EntryNode(e) %>;
+entries -> entry ',' entries | entry <% (e)=>new EntriesNode(e) %>;
+obj -> '{' entries '}' | '{' entries '}' <% (e)=>new ObjectNode(e) %>;
+items -> factor ',' items | factor <% (e)=>new ItemsNode(e) %>;
+array -> '[' items ']' | '[' items ']' <% (e)=>new ArrayNode(e) %>;
+json -> factor <% (e)=>new JSONNode(e) %>;
+
+============================loose json grammar============================
+#TOKEN_PROTOTYPES
+STRING,NUMBER,BOOLEAN,NULL
+
+#GRAMMAR
+S -> json;
+factor -> array | obj | STRING | NUMBER | BOOLEAN | NULL <% (e)=> new FactorNode(e) %>;
+entry -> STRING ':' factor <% (e)=>new EntryNode(e) %>;
+entries -> entry ',' entries | entry | entry ','  <% (e)=>new EntriesNode(e) %>;
+obj -> '{' entries '}' | '{' entries '}' <% (e)=>new ObjectNode(e) %>;
+items -> factor ',' items | factor | factor ',' <% (e)=>new ItemsNode(e) %>;
+array -> '[' items ']' | '[' items ']' <% (e)=>new ArrayNode(e) %>;
+json -> factor <% (e)=>new JSONNode(e) %>;
