@@ -29,8 +29,8 @@ export class JSONXBuilder {
 export default class JSONX {
 
 	/* static */
-	static defaultStringify = createStringify()
-	static defaultParse = createParse()
+	private static defaultStringify = createStringify()
+	private static defaultParse = createParse()
 	static stringify(obj: any) {
 		return JSONX.defaultStringify.apply(obj)
 	}
@@ -39,7 +39,7 @@ export default class JSONX {
 	}
 
 	/* instance */
-	stringifyInstance: Stringify
+	private stringifyInstance: Stringify
 	constructor(options: JSONXOptions) {
 		this.stringifyInstance = createStringify(options)
 	}
@@ -51,4 +51,3 @@ export default class JSONX {
 	}
 	
 }
-

@@ -229,7 +229,7 @@ export class RegexpLexer extends AbstractLexer<Token> implements ILexer {
 				if (this.reservedWords.has(lexeme)) {
 					token = Object.assign(new Token({ lexeme, tag: Tag.WORD, lexval: lexeme }), this.reservedWords.get(lexeme)!)
 				} else {
-					throw new Error("Unknown token:" + lexeme)
+					throw new Error("Unknown token:" + lexeme +` at ${this.line},${this.col}`)
 				}
 				break
 			case Tag.REAL: case Tag.NUM:
@@ -246,7 +246,7 @@ export class RegexpLexer extends AbstractLexer<Token> implements ILexer {
 				token = new Token({ lexeme, lexval: lexeme, tag: Tag.SINGLE })
 				break
 			default:
-				throw new Error("Unknown tag:" + type)
+				throw new Error("Unknown tag:" + type+` at ${this.line},${this.col}`)
 		}
 		//行列计数
 		let lineBegin = this.line, colBegin = this.col

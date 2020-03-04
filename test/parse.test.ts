@@ -159,7 +159,7 @@ describe(`Parser Test`, () => {
 import jsonx from "~/index"
 
 describe(`JSONX Parse Test`, () => {
-	it(``, () => {
+	it(`case1`, () => {
 		let r = jsonx.parse(getMock("2.json.txt"))
 		should(r).eql({
 			"target": "ESNext",

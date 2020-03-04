@@ -1,4 +1,4 @@
-import { isPrimitive } from "util"
+import { isPrimitive } from "~/common"
 import { Gragh } from "~/common"
 import should from "should"
 import { Member,Group } from "./mock"

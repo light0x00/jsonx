@@ -9,15 +9,15 @@ export class MismatchError extends Error {
 		let expectation = ""
 		if (isIterable(expected)) {
 			for (let e of expected) {
-				expectation += `"${e}",`
+				expectation += `"${e}" or `
 			}
-			expectation = expectation.replace(/,$/, "")
+			expectation = expectation.replace(/or\s$/, "")
 		}
 		else {
 			expectation = expected
 		}
 		
-		err_msg = `The expected input is ${expectation},but actually "${actual}"`
+		err_msg = `The expected input is ${expectation},but got "${actual}"`
 
 		if (actual.getLocaltion)
 			err_msg += " at " + actual.getLocaltion()

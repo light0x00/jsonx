@@ -1,16 +1,21 @@
 import { Queue } from "@light0x00/shim"
-import debug from "debug"
+// import debug from "debug"
 
-export const logger = debug("jsonx")
+// export const logger = debug("jsonx")
+export const logger = (str : any)=>{ if(process.env.NODE_ENV=="development" ) console.log(str) }
 
 export type Class = (new () => Object) | Function
 
-export function isPrimitive(value: Object) {
+export function isPrimitive(value: any) {
 	return (typeof value !== "object" && typeof value !== "function") || value === null
 }
 
-export function isString(obj: Object): obj is string {
-	return typeof obj === "string"
+export function isString(value: any): value is string {
+	return typeof value === "string"
+}
+
+export function isNullOrUndefined(value : any): value is null | undefined {
+	return value === null || value === undefined
 }
 
 export class Gragh<T>{

@@ -1,5 +1,4 @@
-import { Class, isPrimitive, isString, Gragh } from "../common"
-import { isNullOrUndefined } from "util"
+import { Class, isPrimitive, isString,isNullOrUndefined, Gragh } from "../common"
 
 export type PropertyConvertStrategy = {
 	test(clazz: string): boolean,
