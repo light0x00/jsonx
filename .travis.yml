@@ -1,7 +1,6 @@
 if: commit_message !~ /(no-deploy|wip)/
 os:
     - linux
-    - windows
     - osx
 language: node_js
 node_js:
