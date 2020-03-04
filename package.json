@@ -1,18 +1,32 @@
 {
-	"name": "fastjson",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"name": "@light0x00/jsonx",
+	"version": "0.0.0",
 	"scripts": {
-		"test": "yarn mocha test/**/*.ts",
-		"build:esm": "yarn tsc -b tsconfig.esm.json",
-		"build:cjs": "yarn tsc -b tsconfig.cjs.json",
-		"build": "yarn run build:esm && yarn run build:cjs",
+		"test": "yarn cross-env TS_NODE_PROJECT=test/tsconfig.json mocha test/**/*.test.ts",
+		"build": "yarn tsc -b tsconfig.json",
+		"build:prod": "yarn tsc -b tsconfig.json && node -r esm node_modules/.bin/webpack",
 		"lint": "eslint --fix src/**/*.ts test/**/*.ts"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"main": "lib/cjs/index.js",
+	"module": "lib/esm/index.js",
+	"types": "lib/types/index.d.ts",
+	"files": [
+		"lib",
+		"src"
+	],
+	"description": "A JSON extension for Javascript.",
+	"keywords": [
+		"json"
+	],
+	"author": "Chen Yang <light0x00@163.com> (https://github.com/light0x00)",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/light0x00/jsonx.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"devDependencies": {
 		"@types/debug": "^4.1.5",
 		"@types/lodash": "^4.14.149",
@@ -21,12 +35,18 @@
 		"@typescript-eslint/eslint-plugin": "^2.21.0",
 		"@typescript-eslint/parser": "^2.21.0",
 		"eslint": "^6.8.0",
+		"esm": "^3.2.25",
 		"lodash": "^4.17.15",
 		"mocha": "^7.0.1",
 		"should": "^13.2.3",
+		"ts-loader": "^6.2.1",
 		"ts-node": "^8.6.2",
 		"tsconfig-paths": "^3.9.0",
-		"typescript": "^3.7.4"
+		"typescript": "^3.7.4",
+		"webpack": "^4.42.0",
+		"webpack-bundle-analyzer": "^3.6.0",
+		"webpack-cli": "^3.3.11",
+		"webpack-merge": "^4.2.2"
 	},
 	"dependencies": {
 		"@parser-generator/definition": "^0.1.0-alpha.0",
