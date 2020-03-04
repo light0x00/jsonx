@@ -6,30 +6,30 @@
 
 ## Features
 
-**Customize the converting**
+**Customizable converter**
+
+Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the transformation result of the matching data.
 
 Two types of converters are supported:
 
-- **class conveter** ,for specified type
+- **class conveter** ,Match by Class (`xx.constructor`)
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addClassConverter(Date, (d: Date) => d.getFullYear()+"-"+d.getMonth())
 		.build()
-
-	jsonx.stringify({date:new Date()}  //output:  {"date":"2020-03-04T03:44:34.000Z"}
+	jsonx.stringify({date:new Date()}  //output: "{"date":"2020-2"}"
 	```
-- **property conveter**, for specified property
+- **property conveter**, Match by property name
 
 	```ts
-	let d = { map: new Map([["key1", "val1"]]) }
 	let jsonx = new JSONXBuilder()
 		.addPropertyConverter("map", (obj: Map<any, any>) => Array.from(obj.entries()))
 		.build()
-	let r = jsonx.stringify(d)
+	let r = jsonx.stringify( { map: new Map([["key1", "val1"]]) } )
 	console.log(r)  //output: {"map":[["key1","val1"]]}
 	```
 
-**Loose rules**
+**Loose analysis  rules**
 
 The comment、unclosed comma are supported
 

@@ -1,15 +1,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 [![Build Status](https://travis-ci.com/light0x00/jsonx.svg?branch=master)](https://travis-ci.com/light0x00/jsonx)
-
 [![a](https://img.shields.io/npm/v/@light0x00/jsonx)](https://www.npmjs.com/package/@light0x00/jsonx)
+
+[English Document](./README.en.md)
 
 ## 特性
 
+**自定义转换规则**
 
-**自定义转换规则**, `stringify` 支持两种转换器
+每当遇到匹配的类型时,都会调用指定的转换器函数,传入待转换数据,返回值将决定该匹配数据的序列化结果.
 
-- **class conveter** ,针对指定类型
+支持两种转换器:
+
+- **class conveter** ,按类型匹配
+
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addClassConverter(Date, (d: Date) => d.getFullYear()+"-"+d.getMonth())
@@ -17,7 +21,7 @@
 
 	jsonx.stringify({date:new Date()}  //output:  "{"date":"2020-2"}"
 	```
-- **property conveter**, 针对指定属性
+- **property conveter**, 按属性名称匹配
 
 	```ts
 	let jsonx = new JSONXBuilder()
@@ -30,7 +34,7 @@
 
 
 
-**宽松的规则**
+**宽松的分析规则**
 
 支持注释、未闭合的逗号
 
