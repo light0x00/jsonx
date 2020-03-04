@@ -1,45 +1,38 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://travis-ci.com/light0x00/jsonx.svg?branch=master)](https://travis-ci.com/light0x00/jsonx)
-[![a](https://img.shields.io/npm/v/@light0x00/jsonx)](https://www.npmjs.com/package/@light0x00/jsonx)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  <a href="https://travis-ci.com/light0x00/jsonx"><img src="https://travis-ci.com/light0x00/jsonx.svg?branch=master"></a>  <a href="https://www.npmjs.com/package/@light0x00/jsonx"><img src="https://img.shields.io/npm/v/@light0x00/jsonx"></a>
 
-[English Document](./README.en.md)
+[中文文档](./README.zh.md)
 
-## 特性
+## Features
 
-**自定义转换规则**
+**Customizable converter**
 
-每当遇到匹配的类型时,都会调用指定的转换器函数,传入待转换数据,返回值将决定该匹配数据的序列化结果.
+Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the transformation result of the matching data.
 
-支持两种转换器:
+Two types of converters are supported:
 
-- **class conveter** ,按类型匹配
-
+- **class conveter** ,Match by Class (`xx.constructor`)
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addClassConverter(Date, (d: Date) => d.getFullYear()+"-"+d.getMonth())
 		.build()
-
-	jsonx.stringify({date:new Date()}  //output:  "{"date":"2020-2"}"
+	jsonx.stringify({date:new Date()}  //output: "{"date":"2020-2"}"
 	```
-- **property conveter**, 按属性名称匹配
+- **property conveter**, Match by property name
 
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addPropertyConverter("map", (obj: Map<any, any>) => Array.from(obj.entries()))
 		.build()
-
-	let r = jsonx.stringify({ map: new Map([["key1", "val1"]]) })
+	let r = jsonx.stringify( { map: new Map([["key1", "val1"]]) } )
 	console.log(r)  //output: {"map":[["key1","val1"]]}
 	```
 
+**Loose analysis  rules**
 
-
-**宽松的分析规则**
-
-支持注释、未闭合的逗号
+The comment、unclosed comma are supported
 
 ```ts
-let r = JSONX.parse(`{
+let r = jsonx.parse(`{
 	/* Some comments */
 	"target": "ESNext", //Some comments
 	"lib": [
@@ -50,25 +43,25 @@ let r = JSONX.parse(`{
 console.log(r)  //output: {"target":"ESNext","lib": ["ESNext",null]}
 ```
 
+**Detailed error reports**
 
-**精确的错误报告**
-
-当格式错误时,指示预期的内容,并显示错误位置
+When an error occurs, report the expected content, and the wrong location
 
 ```ts
-let r = JSONX.parse(`{
+let r = jsonx.parse(`{
 	"target":"ESNext",
 	:
  }`)
+
 //Error: The expected input is "}" or "STRING" ,but got ":" at (3,1) ~ (3,2)
 ```
 
-> 定位信息格式为: (起始行,起始列) ~ (结束行,结束列)
+> The location format where error occurred: (start row,start column) ~ (end row,end column)
 
 
-**环依赖检测**
+**Circular references detection**
 
-当存在循环引用时,报告整个依赖链
+When a circular reference detected, report the reference chain
 
 ```ts
 class Member {
@@ -93,8 +86,8 @@ jsonx.stringify(jack)
 // Error: circular references detected: jack->rose->alice->bob->jack
 ```
 
+## Install
 
-## 安装
 
 **npm**
 
@@ -111,11 +104,11 @@ npm install @light0x00/jsonx
 </script>
 ```
 
-## 使用案例
+## Usage
 
-同时支持esm和cjs, 下面将以esm为例.
+Support both ESModule and CommonJS, use ESModule as example below.
 
-**基本使用**
+**Basic usage**
 
 ```ts
 import JSONX from "@light0x00/jsonx"
@@ -126,23 +119,23 @@ JSONX.parse(`["foo","bar"]`)
 JSONX.stringify({foo:"bar"})
 JSONX.stringify(["foo","bar"])
 
-//默认会将Date类型的转换规则为: `dateObj.toISOString()`
+//By default `Date` type is converted to : `dateObj.toISOString()`
 let r  =JSONX.stringify([new Date()])
 console.log(r)  //output: ["2020-03-04T06:24:02.927Z"]
 ```
 
-**自定义**
+**Customized usage**
 
 ```ts
 import { JSONXBuilder } from "@light0x00/jsonx"
 
-//组装一个符合你的需求的 JSONX 对象
+//Build a `JSONX` object according your demand
 let jsonx = new JSONXBuilder()
 	.addClassConverter(Date, (obj: Date) => obj.toLocaleDateString())
 	.addPropertyConverter("relationships", (obj: Map<string, string>) => Array.from(obj.entries()))
 	.build()
 
-//使用它
+//Use it
 let d = {
 	name: "foo",
 	date: new Date(),
@@ -154,6 +147,6 @@ let d = {
 }
 let r = jsonx.stringify(d)
 
-//结果
+//Result
 should(r).eql(`{"name":"foo","date":"${d.date.toLocaleDateString()}","members":[{"name":"alice"},{"name":"bob"}],"relationships":[["alice","bob"]]}`)
 ```

@@ -1,40 +1,41 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  <a href="https://travis-ci.com/light0x00/jsonx"><img src="https://travis-ci.com/light0x00/jsonx.svg?branch=master"></a>  <a href="https://www.npmjs.com/package/@light0x00/jsonx"><img src="https://img.shields.io/npm/v/@light0x00/jsonx"></a>
 
-[![Build Status](https://travis-ci.com/light0x00/jsonx.svg?branch=master)](https://travis-ci.com/light0x00/jsonx)
+## 特性
 
-[![a](https://img.shields.io/npm/v/@light0x00/jsonx)](https://www.npmjs.com/package/@light0x00/jsonx)
+**自定义转换规则**
 
-## Features
+每当遇到匹配的类型时,都会调用指定的转换器函数,传入待转换数据,返回值将决定该匹配数据的序列化结果.
 
-**Customizable converter**
+支持两种转换器:
 
-Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the transformation result of the matching data.
+- **class conveter** ,按类型匹配
 
-Two types of converters are supported:
-
-- **class conveter** ,Match by Class (`xx.constructor`)
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addClassConverter(Date, (d: Date) => d.getFullYear()+"-"+d.getMonth())
 		.build()
-	jsonx.stringify({date:new Date()}  //output: "{"date":"2020-2"}"
+
+	jsonx.stringify({date:new Date()}  //output:  "{"date":"2020-2"}"
 	```
-- **property conveter**, Match by property name
+- **property conveter**, 按属性名称匹配
 
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addPropertyConverter("map", (obj: Map<any, any>) => Array.from(obj.entries()))
 		.build()
-	let r = jsonx.stringify( { map: new Map([["key1", "val1"]]) } )
+
+	let r = jsonx.stringify({ map: new Map([["key1", "val1"]]) })
 	console.log(r)  //output: {"map":[["key1","val1"]]}
 	```
 
-**Loose analysis  rules**
 
-The comment、unclosed comma are supported
+
+**宽松的分析规则**
+
+支持注释、未闭合的逗号
 
 ```ts
-let r = jsonx.parse(`{
+let r = JSONX.parse(`{
 	/* Some comments */
 	"target": "ESNext", //Some comments
 	"lib": [
@@ -45,25 +46,25 @@ let r = jsonx.parse(`{
 console.log(r)  //output: {"target":"ESNext","lib": ["ESNext",null]}
 ```
 
-**Detailed error reports**
 
-When an error occurs, report the expected content, and the wrong location
+**精确的错误报告**
+
+当格式错误时,指示预期的内容,并显示错误位置
 
 ```ts
-let r = jsonx.parse(`{
+let r = JSONX.parse(`{
 	"target":"ESNext",
 	:
  }`)
-
 //Error: The expected input is "}" or "STRING" ,but got ":" at (3,1) ~ (3,2)
 ```
 
-> The location format where error occurred: (start row,start column) ~ (end row,end column)
+> 定位信息格式为: (起始行,起始列) ~ (结束行,结束列)
 
 
-**Circular references detection**
+**环依赖检测**
 
-When a circular reference detected, report the reference chain
+当存在循环引用时,报告整个依赖链
 
 ```ts
 class Member {
@@ -88,8 +89,8 @@ jsonx.stringify(jack)
 // Error: circular references detected: jack->rose->alice->bob->jack
 ```
 
-## Install
 
+## 安装
 
 **npm**
 
@@ -106,11 +107,11 @@ npm install @light0x00/jsonx
 </script>
 ```
 
-## Usage
+## 使用案例
 
-Support both ESModule and CommonJS, use ESModule as example below.
+同时支持esm和cjs, 下面将以esm为例.
 
-**Basic usage**
+**基本使用**
 
 ```ts
 import JSONX from "@light0x00/jsonx"
@@ -121,23 +122,23 @@ JSONX.parse(`["foo","bar"]`)
 JSONX.stringify({foo:"bar"})
 JSONX.stringify(["foo","bar"])
 
-//By default `Date` type is converted to : `dateObj.toISOString()`
+//默认会将Date类型的转换规则为: `dateObj.toISOString()`
 let r  =JSONX.stringify([new Date()])
 console.log(r)  //output: ["2020-03-04T06:24:02.927Z"]
 ```
 
-**Customized usage**
+**自定义**
 
 ```ts
 import { JSONXBuilder } from "@light0x00/jsonx"
 
-//Build a `JSONX` object according your demand
+//组装一个符合你的需求的 JSONX 对象
 let jsonx = new JSONXBuilder()
 	.addClassConverter(Date, (obj: Date) => obj.toLocaleDateString())
 	.addPropertyConverter("relationships", (obj: Map<string, string>) => Array.from(obj.entries()))
 	.build()
 
-//Use it
+//使用它
 let d = {
 	name: "foo",
 	date: new Date(),
@@ -149,6 +150,6 @@ let d = {
 }
 let r = jsonx.stringify(d)
 
-//Result
+//结果
 should(r).eql(`{"name":"foo","date":"${d.date.toLocaleDateString()}","members":[{"name":"alice"},{"name":"bob"}],"relationships":[["alice","bob"]]}`)
 ```
