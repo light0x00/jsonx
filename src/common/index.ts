@@ -2,7 +2,7 @@ import { Queue } from "@light0x00/shim"
 // import debug from "debug"
 
 // export const logger = debug("jsonx")
-export const logger = (str : any)=>{ if(process.env.NODE_ENV=="development" ) console.log(str) }
+export const logger = (str: any) => { if (process.env.NODE_ENV === "development") console.log(str) }
 
 export type Class = (new () => Object) | Function
 
@@ -14,7 +14,7 @@ export function isString(value: any): value is string {
 	return typeof value === "string"
 }
 
-export function isNullOrUndefined(value : any): value is null | undefined {
+export function isNullOrUndefined(value: any): value is null | undefined {
 	return value === null || value === undefined
 }
 

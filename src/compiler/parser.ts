@@ -1,7 +1,8 @@
 import { NonTerminal, ParsingTable, ILexer, IToken } from "@parser-generator/definition"
 import table from "./table"
-import { Stack, isIterable } from "@light0x00/shim"
-import { logger } from "../common"
+import { isIterable } from "@light0x00/shim"
+
+import { Stack } from "typescript-collections"
 
 export class MismatchError extends Error {
 	constructor(expected: any, actual: any) {
@@ -16,7 +17,7 @@ export class MismatchError extends Error {
 		else {
 			expectation = expected
 		}
-		
+
 		err_msg = `The expected input is ${expectation},but got "${actual}"`
 
 		if (actual.getLocaltion)
@@ -24,6 +25,7 @@ export class MismatchError extends Error {
 		super(err_msg)
 	}
 }
+
 class LRParser {
 	parsingTable: ParsingTable
 	constructor(parsingTable: ParsingTable) {
@@ -37,7 +39,7 @@ class LRParser {
 		let lookahead: IToken | NonTerminal = lexer.peek()
 
 		while (1) {
-			let topSta = stateStack.peek()
+			let topSta = stateStack.peek()!
 			let op = this.parsingTable.get(topSta, lookahead.key())
 			if (op == undefined)
 				throw new MismatchError(this.parsingTable.getExpectedTokens(topSta), lookahead)
@@ -52,22 +54,19 @@ class LRParser {
 			}
 			else if (op.isReduce()) {
 				/* 此次归约产生的AST节点所需的元素 */
-				let eles = []
+				let eles = new Array(op.prod.body.length)
 				// 动作: 归约完成后将符号对应的状态弹出
 				// 每个状态都由输入一个符号得到 因此每个状态都一个对应的符号  详见:P158
 				for (let i = 0; i < op.prod.body.length; i++) {
 					stateStack.pop()
-					eles.unshift(astStack.pop()!)  //issue AST元素的顺序问题
+					eles[op.prod.body.length - i - 1] = astStack.pop()!  //issue AST元素的顺序问题
 				}
-				astStack.push(op.prod.postAction(eles, astStack))  //issue ASTNode的元素的顺序问题
-				logger(`reduce ${op.prod}, make ast: ${astStack.peek()}`)
+				astStack.push(op.prod.postAction(eles, astStack as any))  //issue ASTNode的元素的顺序问题
 				lookahead = op.prod.head
 			}
 			else if (op.isAccept()) {
-				logger(`accept!`)
 				break
 			}
-			logger(`${astStack.join(" ")}`)
 		}
 		return astStack.pop()
 	}

@@ -1,4 +1,4 @@
-import { logger } from "../common"
+// import { logger } from "../common"
 import { IToken, Terminal, TokenPro, EOF, ILexer } from "@parser-generator/definition"
 
 enum Tag {
@@ -87,7 +87,8 @@ export class Token implements IToken {
 	}
 }
 
-import { Queue } from "@light0x00/shim"
+// import { Queue } from "@light0x00/shim"
+import { Queue } from "typescript-collections"
 
 export abstract class AbstractLexer<T>{
 
@@ -102,9 +103,9 @@ export abstract class AbstractLexer<T>{
 	 * 预读指定位置
 	 * @param i 
 	 */
-	peekFor(i: number): T {
+	private peekFor(i: number): T {
 		if (this.fill(i)) {
-			return this._buffer.get(i)!
+			return this._buffer.peek()!
 		} else {
 			return this.getEOF()
 		}
@@ -114,7 +115,7 @@ export abstract class AbstractLexer<T>{
 	 */
 	next(): T {
 		if (this.fill(0))
-			return this._buffer.removeFirst()!
+			return this._buffer.dequeue()!
 		else
 			return this.getEOF()
 	}
@@ -125,7 +126,7 @@ export abstract class AbstractLexer<T>{
 	 * @param i
 	 */
 	private fill(i: number) {
-		while (this._buffer.size() < i + 1 && this.hasMore()) {
+		while (this._buffer.size() <= i && this.hasMore()) {
 			this.addToken()
 		}
 		return i < this._buffer.size()
@@ -134,7 +135,7 @@ export abstract class AbstractLexer<T>{
 	private addToken() {
 		let token = this.createToken()
 		if (token != undefined) {
-			this._buffer.addLast(token)
+			this._buffer.enqueue(token)
 		}
 	}
 	/**
@@ -220,10 +221,16 @@ export class RegexpLexer extends AbstractLexer<Token> implements ILexer {
 		let lexeme = matchResult[0], token: Token | undefined
 		switch (type) {
 			case Tag.BLANK:
-				logger("skip blank token")
 				break
-			case Tag.COMMENT: case Tag.MULTI_COMMENT:
-				logger("skip comment token")
+			case Tag.STRING:
+				{
+					let literal = matchResult.groups!["literal"]
+					literal = literal.replace(/\\["]/g, "\"") //还原转义符
+					token = new Token({ lexeme: literal, lexval: literal, tag: Tag.STRING, proto: STRING })
+				}
+				break
+			case Tag.SINGLE:
+				token = new Token({ lexeme, lexval: lexeme, tag: Tag.SINGLE })
 				break
 			case Tag.WORD:
 				if (this.reservedWords.has(lexeme)) {
@@ -235,15 +242,7 @@ export class RegexpLexer extends AbstractLexer<Token> implements ILexer {
 			case Tag.REAL: case Tag.NUM:
 				token = new Token({ lexeme, lexval: parseFloat(lexeme), tag: Tag.NUM, proto: NUMBER })
 				break
-			case Tag.STRING:
-				{
-					let literal = matchResult.groups!["literal"]
-					literal = literal.replace(/\\["]/g, "\"") //还原转义符
-					token = new Token({ lexeme: literal, lexval: literal, tag: Tag.STRING, proto: STRING })
-				}
-				break
-			case Tag.SINGLE:
-				token = new Token({ lexeme, lexval: lexeme, tag: Tag.SINGLE })
+			case Tag.COMMENT: case Tag.MULTI_COMMENT:
 				break
 			default:
 				throw new Error("Unknown tag:" + type+` at ${this.line},${this.col}`)

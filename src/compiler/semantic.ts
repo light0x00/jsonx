@@ -13,12 +13,16 @@ interface ASTVisitor {
 
 export class ParseVisitor implements ASTVisitor {
 
-	apply(ast: JSONNode) : Object{
+	apply(ast: JSONNode): Object {
 		return this.visitJSON(ast)
 	}
 
-	visitFactor(node: FactorNode):Object {
+	visitFactor(node: FactorNode): Object {
 		if (node.children[0] instanceof Token) {
+			/* 负数 */
+			if (node.children[0].lexval === "-") {
+				return -(node.children[1] as Token).lexval
+			}
 			return node.children[0].lexval
 		} else if (node.children[0] instanceof ObjectNode) {
 			return this.visitObject(node.children[0])

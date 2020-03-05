@@ -18,7 +18,7 @@ STRING,NUMBER,BOOLEAN,NULL
 
 #GRAMMAR
 S -> json;
-factor -> array | obj | STRING | NUMBER | BOOLEAN | NULL <% (e)=> new FactorNode(e) %>;
+factor -> array | obj | STRING | NUMBER | '-' NUMBER | BOOLEAN | NULL <% (e)=> new FactorNode(e) %>;
 entry -> STRING ':' factor <% (e)=>new EntryNode(e) %>;
 entries -> entry ',' entries | entry | entry ','  <% (e)=>new EntriesNode(e) %>;
 obj -> '{' entries '}' | '{' entries '}' <% (e)=>new ObjectNode(e) %>;

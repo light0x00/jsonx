@@ -127,8 +127,9 @@ describe(`Parser Test`, () => {
 		let ast = parser.parse(new RegexpLexer(str))
 		let r = new ParseVisitor().apply(ast)
 		should(r).eql({
-			"key1": 123,
-			"key2": 123.456,
+			"key0": 123,
+			"key1": 123.456,
+			"key2": -123.456,
 			"key3": "abc",
 			"key4": false,
 			"key5": {
