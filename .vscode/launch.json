@@ -7,6 +7,16 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "RUN(Benchmark)",
+			"args": [
+				"${file}",
+			],
+			"console": "integratedTerminal",
+		}
+		,
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "DEBUG(TS)",
 			"args": [
 				"${file}",
@@ -18,7 +28,7 @@
 				"tsconfig-paths/register"
 			],
 			"env": {
-				"DEBUG": "jsonx:*",
+				"DEBUG": "jsonx",
 				"TS_NODE_PROJECT": "tsconfig.json"
 			},
 			"console": "integratedTerminal",
@@ -40,11 +50,18 @@
 				"tsconfig-paths/register"
 			],
 			"env": {
-				"DEBUG": "jsonx:*",
+				"DEBUG": "jsonx",
 				"TS_NODE_PROJECT": "${workspaceFolder}/test/tsconfig.json",
 			},
 			"console": "integratedTerminal",
 			"protocol": "inspector",
+		},
+		{
+			"type": "node",
+			"request": "attach",
+			"name": "DEBUG(MOCHA)",
+			"protocol": "inspector",
+			"port": 9229
 		},
 	]
 }
