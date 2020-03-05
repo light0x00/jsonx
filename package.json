@@ -6,7 +6,7 @@
 		"build": "yarn tsc -b tsconfig.json",
 		"build:prod": "yarn tsc -b tsconfig.json && webpack --config-register esm",
 		"lint": "eslint --fix src/**/*.ts test/**/*.ts",
-		"release": "yarn publish --registry https://registry.npmjs.org"
+		"release": "yarn publish --registry https://registry.npmjs.org && npm publish --registry https://npm.pkg.github.com/"
 	},
 	"main": "lib/cjs/index.js",
 	"module": "lib/esm/index.js",
@@ -29,10 +29,7 @@
 		"url": "https://github.com/light0x00/jsonx.git"
 	},
 	"publishConfig": {
-		"access": "public",
-		"publishConfig": {
-			"registry": "https://npm.pkg.github.com/"
-		}
+		"access": "public"
 	},
 	"devDependencies": {
 		"@types/debug": "^4.1.5",
