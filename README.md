@@ -1,3 +1,5 @@
+# JSONX
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  <a href="https://travis-ci.com/light0x00/jsonx"><img src="https://travis-ci.com/light0x00/jsonx.svg?branch=master"></a>  <a href="https://www.npmjs.com/package/@light0x00/jsonx"><img src="https://img.shields.io/npm/v/@light0x00/jsonx"></a>
 
 [中文文档](./README.zh.md)
@@ -6,7 +8,7 @@
 
 **Customizable converter**
 
-Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the transformation result of the matching data.
+Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the converting result of the matching data.
 
 Two types of converters are supported:
 
@@ -27,7 +29,7 @@ Two types of converters are supported:
 	console.log(r)  //output: {"map":[["key1","val1"]]}
 	```
 
-**Loose analysis  rules**
+**Loose analysis rules**
 
 The comment、unclosed comma are supported
 
@@ -45,7 +47,7 @@ console.log(r)  //output: {"target":"ESNext","lib": ["ESNext",null]}
 
 **Detailed error reports**
 
-When an error occurs, report the expected content, and the wrong location
+When an error occurs, report the expected content, and the error location
 
 ```ts
 let r = jsonx.parse(`{
