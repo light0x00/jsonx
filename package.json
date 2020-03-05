@@ -1,11 +1,12 @@
 {
 	"name": "@light0x00/jsonx",
-	"version": "0.0.4",
+	"version": "0.0.6",
 	"scripts": {
 		"test": "yarn cross-env TS_NODE_PROJECT=test/tsconfig.json mocha test/**/*.test.ts",
 		"build": "yarn tsc -b tsconfig.json",
 		"build:prod": "yarn tsc -b tsconfig.json && webpack --config-register esm",
-		"lint": "eslint --fix src/**/*.ts test/**/*.ts"
+		"lint": "eslint --fix src/**/*.ts test/**/*.ts",
+		"release": "yarn publish --registry https://registry.npmjs.org"
 	},
 	"main": "lib/cjs/index.js",
 	"module": "lib/esm/index.js",
@@ -59,7 +60,6 @@
 	},
 	"dependencies": {
 		"@parser-generator/definition": "^0.1.0-alpha.0",
-		"collections": "^5.1.9",
 		"debug": "^4.1.1",
 		"typescript-collections": "^1.3.3"
 	}
