@@ -88,7 +88,7 @@ export class Token implements IToken {
 }
 
 // import { Queue } from "@light0x00/shim"
-import { Queue } from "typescript-collections"
+import Queue from "typescript-collections/dist/lib/Queue"
 
 export abstract class AbstractLexer<T>{
 

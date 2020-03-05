@@ -25,7 +25,8 @@
 		"url": "https://github.com/light0x00/jsonx.git"
 	},
 	"publishConfig": {
-		"access": "public"
+		"access": "public",
+		"publishConfig": { "registry": "https://npm.pkg.github.com/" }
 	},
 	"devDependencies": {
 		"@types/debug": "^4.1.5",

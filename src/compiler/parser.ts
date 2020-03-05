@@ -2,7 +2,7 @@ import { NonTerminal, ParsingTable, ILexer, IToken } from "@parser-generator/def
 import table from "./table"
 import { isIterable } from "@light0x00/shim"
 
-import { Stack } from "typescript-collections"
+import  Stack from "typescript-collections/dist/lib/Stack"
 
 export class MismatchError extends Error {
 	constructor(expected: any, actual: any) {
