@@ -1,6 +1,6 @@
 {
 	"name": "@light0x00/jsonx",
-	"version": "0.0.6",
+	"version": "0.1.0",
 	"scripts": {
 		"test": "yarn cross-env TS_NODE_PROJECT=test/tsconfig.json mocha test/**/*.test.ts",
 		"build": "yarn tsc -b tsconfig.json",
