@@ -120,7 +120,7 @@ describe(`Lexer Test`, () => {
 })
 
 import parser from "~/compiler/parser"
-import { ParseVisitor } from "~/compiler/semantic"
+import { ParseVisitor } from "~/compiler/interp"
 describe(`Parser Test`, () => {
 	it(`case1`, () => {
 		let str = getMock("1.json.txt")

@@ -1,6 +1,6 @@
 import { RegexpLexer } from "../compiler/lexer"
 import parser from "../compiler/parser"
-import { ParseVisitor } from "../compiler/semantic"
+import { ParseVisitor } from "../compiler/interp"
 import { logger } from "../common"
 
 let visitor = new ParseVisitor()
