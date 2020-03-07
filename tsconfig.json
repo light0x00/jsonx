@@ -2,10 +2,10 @@
 	"extends": "./tsconfig.base.json",
 	"references": [
 		{
-			"path": "./tsconfig.cjs.json"
+			"path": "./src/tsconfig.json"
 		},
 		{
-			"path": "./tsconfig.esm.json"
+			"path": "./src/tsconfig.esm.json"
 		},
 		{
 			"path": "./test/tsconfig.json"
