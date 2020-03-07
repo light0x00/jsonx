@@ -20,8 +20,8 @@ export class MismatchError extends Error {
 
 		err_msg = `The expected input is ${expectation},but got "${actual}"`
 
-		if (actual.getLocaltion)
-			err_msg += " at " + actual.getLocaltion()
+		if (actual.getLocation)
+			err_msg += " at " + actual.getLocation()
 		super(err_msg)
 	}
 }

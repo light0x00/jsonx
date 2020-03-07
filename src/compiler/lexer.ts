@@ -76,7 +76,7 @@ export class Token implements IToken {
 		return this._lexeme
 	}
 
-	getLocaltion(): string {
+	getLocation(): string {
 		return `(${this._lineBegin},${this._colBegin}) ~ (${this._lineEnd},${this._colEnd})`
 	}
 	setLocation(lineBegin: number, colBegin: number, lineEnd: number, colEnd: number) {
