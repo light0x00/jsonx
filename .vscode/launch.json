@@ -61,8 +61,7 @@
 			"request": "attach",
 			"name": "DEBUG(MOCHA)",
 			"protocol": "inspector",
-			"port": 9229,
-			"console": "integratedTerminal",
+			"port": 9229
 		},
 	]
 }
