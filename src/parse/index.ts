@@ -1,15 +1,11 @@
 import { RegexpLexer } from "../compiler/lexer"
 import parser from "../compiler/parser"
 import { ParseVisitor } from "../compiler/interp"
-import { logger } from "../common"
 
 let visitor = new ParseVisitor()
 function parse(str: string): Object {
-	logger("parse begin")
 	let ast = parser.parse(new RegexpLexer(str))
-	logger("parse end,interp start")
 	let r = visitor.apply(ast)
-	logger("interp end")
 	return r
 }
 
