@@ -1,6 +1,6 @@
 # JSONX
 
-A JSON Extension Implementation for Javascript.
+A JSON Library for Typescript.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  <a href="https://travis-ci.com/light0x00/jsonx"><img src="https://travis-ci.com/light0x00/jsonx.svg?branch=master"></a>  <a href="https://www.npmjs.com/package/@light0x00/jsonx"><img src="https://img.shields.io/npm/v/@light0x00/jsonx"></a>
 
@@ -10,18 +10,20 @@ A JSON Extension Implementation for Javascript.
 
 **Customizable converter**
 
-Whenever matching data is encountered,  the specified converter-function is called,  and the return value determines the converting result of the matching data.
+You can specify that how to convert an object to string. It's useful such as when converting an `Date` object to specified format.
 
-Two types of converters are supported:
+Two ways to specify how to convert are supported. They are class-based and property-name-based respectively. As you see below, using `addClassConverter` to pass a class based converter, using `addPropertyConverter` to pass a property name based converter.
 
-- **class conveter** ,Match by Class (`xx.constructor`)
+- **class based conveter** ,Pass the class of the property value(in JS it's called `constructor` of a property value) which you'd like to customize its converting.
+
 	```ts
 	let jsonx = new JSONXBuilder()
 		.addClassConverter(Date, (d: Date) => d.getFullYear()+"-"+d.getMonth())
 		.build()
-	jsonx.stringify({date:new Date()}  //output: "{"date":"2020-2"}"
+	jsonx.stringify({date:new Date()})
+	console.log(r)//output: "{"date":"2020-2"}"
 	```
-- **property conveter**, Match by property name
+- **property based conveter**, Pass the property name of the property value which you'd like to customize its converting.
 
 	```ts
 	let jsonx = new JSONXBuilder()
@@ -31,9 +33,11 @@ Two types of converters are supported:
 	console.log(r)  //output: {"map":[["key1","val1"]]}
 	```
 
+In theory,the `converter-function` you passed will be called While matching a relevant data,and its returning value will determine the converting result of the matching data.
+
 **Loose analysis rules**
 
-The comment、unclosed comma are supported
+The json string that you pass, can be nonstandard. JSONX can recognize comments and redundant commas.
 
 ```ts
 let r = jsonx.parse(`{
@@ -42,30 +46,29 @@ let r = jsonx.parse(`{
 	"lib": [
 		"ESNext", /* multiline comment is supported */
 		null  //null is supported
-	], //unclosed comma is supported
+	], //redundant comma is supported
 }`)
 console.log(r)  //output: {"target":"ESNext","lib": ["ESNext",null]}
 ```
 
 **Detailed error reports**
 
-When an error occurs, report the expected content, and the error location
+When an parsing error occurs, JSONX will report the expected content and the error location.
 
 ```ts
 let r = jsonx.parse(`{
 	"target":"ESNext",
 	:
  }`)
-
 //Error: The expected input is "}" or "STRING" ,but got ":" at (3,1) ~ (3,2)
 ```
 
-> The location format where error occurred: (start row,start column) ~ (end row,end column)
+> The format of the error location is `(start row,start column) ~ (end row,end column)`
 
 
 **Circular references detection**
 
-When a circular reference detected, report the reference chain
+When a circular reference is detected,it will throw an exception and report the reference chain.
 
 ```ts
 class Member {
@@ -92,7 +95,6 @@ jsonx.stringify(jack)
 
 ## Install
 
-
 **npm**
 
 ```bash
@@ -110,7 +112,7 @@ npm install @light0x00/jsonx
 
 ## Usage
 
-Support both ESModule and CommonJS, use ESModule as example below.
+It supports both ESModule and CommonJS, using ESModule as example below.
 
 **Basic usage**
 
@@ -123,12 +125,12 @@ JSONX.parse(`["foo","bar"]`)
 JSONX.stringify({foo:"bar"})
 JSONX.stringify(["foo","bar"])
 
-//By default `Date` type is converted to : `dateObj.toISOString()`
+//By default `Date` type is converted using `dateObj.toISOString()`
 let r  =JSONX.stringify([new Date()])
 console.log(r)  //output: ["2020-03-04T06:24:02.927Z"]
 ```
 
-**Customized usage**
+**Advanced usage**
 
 ```ts
 import { JSONXBuilder } from "@light0x00/jsonx"

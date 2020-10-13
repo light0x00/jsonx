@@ -1,6 +1,6 @@
 # JSONX
 
-A JSON Extension Implementation for Javascript.
+A JSON Library for Typescript.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  <a href="https://travis-ci.com/light0x00/jsonx"><img src="https://travis-ci.com/light0x00/jsonx.svg?branch=master"></a>  <a href="https://www.npmjs.com/package/@light0x00/jsonx"><img src="https://img.shields.io/npm/v/@light0x00/jsonx"></a>
 
@@ -8,9 +8,11 @@ A JSON Extension Implementation for Javascript.
 
 **自定义转换规则**
 
-每当遇到匹配的类型时,都会调用指定的转换器函数,传入待转换数据,返回值将决定该匹配数据的序列化结果.
+你可以指定如何将一个对象转换为字符串,这很有用,比如在转换一个`Date`类型对象到指定的格式时. 
 
-支持两种转换器:
+支持两种方式去指定如何转换,它们可以基于类和属性名.
+
+如你下面所看到的,使用`addClassConverter`去传入一个基于类的转换器, 使用`addPropertyConverter`去传入一个基于属性名的转换器.
 
 - **class conveter** ,按类型匹配
 
@@ -33,10 +35,11 @@ A JSON Extension Implementation for Javascript.
 	```
 
 
+在原理上,你传入的`converter-function`将在匹配到相关数据时被调用,并且它的返回值将决定匹配数据的转换结果.
 
 **宽松的分析规则**
 
-支持注释、未闭合的逗号
+你传入的json字符串可以是非标准的,JSONX可以识别注释、多余的逗号.
 
 ```ts
 let r = JSONX.parse(`{
@@ -53,7 +56,7 @@ console.log(r)  //output: {"target":"ESNext","lib": ["ESNext",null]}
 
 **精确的错误报告**
 
-当格式错误时,指示预期的内容,并显示错误位置
+当发生解析错误时,JSONX将报告预期的正文和错误位置.
 
 ```ts
 let r = JSONX.parse(`{
@@ -63,12 +66,12 @@ let r = JSONX.parse(`{
 //Error: The expected input is "}" or "STRING" ,but got ":" at (3,1) ~ (3,2)
 ```
 
-> 定位信息格式为: (起始行,起始列) ~ (结束行,结束列)
+> 错误位置的格式为: (起始行,起始列) ~ (结束行,结束列)
 
 
 **环依赖检测**
 
-当存在循环引用时,报告整个依赖链
+当存在循环引用时,JSONX抛出异常并报告整个依赖链
 
 ```ts
 class Member {
